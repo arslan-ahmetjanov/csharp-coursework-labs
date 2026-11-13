@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/coursework/">
+    <Project Path="coursework/RequestRegistry/RequestRegistry.csproj" />
+  </Folder>
+  <Folder Name="/labs/">
+    <Project Path="labs/Lab25/Lab25.csproj" />
+    <Project Path="labs/Lab26/Lab26.csproj" />
+    <Project Path="labs/Lab27/Lab27.csproj" />
+    <Project Path="labs/Lab28/Lab28.csproj" />
+    <Project Path="labs/Lab29/Lab29.csproj" />
+    <Project Path="labs/Lab31/Lab31.csproj" />
+  </Folder>
+</Solution>
