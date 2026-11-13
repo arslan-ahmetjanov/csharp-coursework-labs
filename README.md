@@ -31,6 +31,8 @@ dotnet run --project coursework/RequestRegistry
 
 ```powershell
 dotnet run --project coursework/RequestRegistry -- --demo
+dotnet run --project coursework/RequestRegistry -- --demo --list
+dotnet run --project coursework/RequestRegistry -- --demo --stats
 ```
 
 ## Курсовая

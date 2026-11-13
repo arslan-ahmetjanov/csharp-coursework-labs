@@ -16,14 +16,16 @@ internal static class Program
         Console.WriteLine("Задача 1. Элементы массива больше 20 и меньше 50");
         int[] numbers = { 4, 7, 13, 20, 33, 23, 54, 41, 19, 50 };
         Console.WriteLine("   Массив: " + string.Join(", ", numbers));
-        Console.WriteLine("   Подходят: " + string.Join(", ", FilterBetween(numbers, 20, 50)));
+        Console.WriteLine("   Подходят: " +
+                          string.Join(", ", FilterBetween(numbers, 20, 50)));
 
         Console.WriteLine();
         Console.WriteLine("Задача 2. Замена указанного значения на противоположное");
         int[] values = { 5, 1, 5, -3, 7, 5, 0 };
         int target = 5;
         Console.WriteLine("   Было:  " + string.Join(", ", values));
-        Console.WriteLine($"   Меняем {target} на {-target}: " + string.Join(", ", NegateValue(values, target)));
+        Console.WriteLine($"   Меняем {target} на {-target}: " +
+                          string.Join(", ", NegateValue(values, target)));
 
         Console.WriteLine();
         Console.WriteLine("Задача 3. Минимум из трёх чисел");

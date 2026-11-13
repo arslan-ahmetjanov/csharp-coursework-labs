@@ -61,7 +61,9 @@ internal static class Program
     private static void CheckDivisibility(int number)
     {
         bool divisible = number % 3 == 0 && number % 7 == 0;
-        string answer = divisible ? "делится на 3 и на 7" : "не делится на 3 и на 7 одновременно";
+        string answer = divisible
+            ? "делится на 3 и на 7"
+            : "не делится на 3 и на 7 одновременно";
         Console.WriteLine($"   {number} — {answer}");
     }
 }

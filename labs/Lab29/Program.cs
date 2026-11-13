@@ -20,7 +20,8 @@ internal static class Program
         Console.WriteLine();
         Console.WriteLine("Задача 2. Обрезка текста");
         string text = "Сегодня мы с вами рассмотрели, как работать со строками в Си-шарп. " +
-                      "Были описаны основные операторы и методы, которые используются для работы со строками";
+                      "Были описаны основные операторы и методы, " +
+                      "которые используются для работы со строками";
         string marker = "Были описаны основные операторы и методы";
         int start = text.IndexOf(marker, StringComparison.Ordinal);
         string cut = text.Substring(start, marker.Length);
@@ -71,11 +72,13 @@ internal static class Program
 
             int sum = array[firstNumber - 1] + array[secondNumber - 1];
             Console.WriteLine(
-                $"   Номера {first} и {second}: {array[firstNumber - 1]} + {array[secondNumber - 1]} = {sum}");
+                $"   Номера {first} и {second}: " +
+                $"{array[firstNumber - 1]} + {array[secondNumber - 1]} = {sum}");
         }
         catch (FormatException)
         {
-            Console.WriteLine($"   Номера \"{first}\" и \"{second}\": введено не число");
+            Console.WriteLine($"   Номера \"{first}\" и \"{second}\": " +
+                              "введено не число");
         }
         catch (IndexOutOfRangeException ex)
         {

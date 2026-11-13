@@ -13,7 +13,7 @@ internal static class Program
         Console.WriteLine("Массивы, список List, циклы");
         Console.WriteLine(new string('-', 60));
 
-        Console.WriteLine("Задача 1. Первые 20 элементов последовательности 1, 4, 7, 10, ...");
+        Console.WriteLine("Задача 1. Первые 20 элементов: 1, 4, 7, 10, ...");
         var sequence = new List<int>();
         for (int i = 0; i < 20; i++)
         {

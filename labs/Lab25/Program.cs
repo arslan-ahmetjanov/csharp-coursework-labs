@@ -39,13 +39,15 @@ internal static class Program
         int count = 42;
         long longCount = count;
         double doubleCount = longCount;
-        Console.WriteLine($"   int {count} -> long {longCount} -> double {doubleCount}");
+        Console.WriteLine($"   int {count} -> long {longCount} -> " +
+                          $"double {doubleCount}");
 
         Console.WriteLine();
         Console.WriteLine("3. Явное преобразование (double -> int)");
         double temperature = 36.6;
         int truncated = (int)temperature;
-        Console.WriteLine($"   (int)36.6 = {truncated} — дробная часть отбрасывается");
+        Console.WriteLine($"   (int)36.6 = {truncated} — " +
+                          "дробная часть отбрасывается");
 
         Console.WriteLine();
         Console.WriteLine("4. Преобразование строки в число");
@@ -57,7 +59,7 @@ internal static class Program
         Console.WriteLine("5. Константа");
         const double Pi = 3.14159;
         Console.WriteLine($"   const double Pi = {Pi}");
-        // Pi = 3.14; // Ошибка CS0131: левая часть присваивания должна быть переменной.
+        // Pi = 3.14; // Ошибка CS0131: константу нельзя изменить.
         Console.WriteLine("   Присваивание константе не компилируется (CS0131).");
 
         Console.WriteLine();
