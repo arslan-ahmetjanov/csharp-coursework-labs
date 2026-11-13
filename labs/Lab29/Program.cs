@@ -25,7 +25,7 @@ internal static class Program
         string marker = "Были описаны основные операторы и методы";
         int start = text.IndexOf(marker, StringComparison.Ordinal);
         string cut = text.Substring(start, marker.Length);
-        Console.WriteLine("   Исходный текст: " + text.Length + " символов");
+        Console.WriteLine("   Исходный текст: " + text.Length + " симв.");
         Console.WriteLine("   Результат:      " + cut);
 
         Console.WriteLine();
