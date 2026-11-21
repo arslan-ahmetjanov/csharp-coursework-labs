@@ -7,9 +7,21 @@ namespace RequestRegistry;
 
 internal static class Program
 {
+    /// <summary>Файл рабочих данных, с которым работает меню.</summary>
     private const string DataFileName = "requests.json";
 
-    private static string DataPath => Path.Combine(AppContext.BaseDirectory, DataFileName);
+    /// <summary>Отдельный файл демонстрационного режима, чтобы не затирать рабочие данные.</summary>
+    private const string DemoDataFileName = "requests.demo.json";
+
+    private const string AppFolderName = "RequestRegistry";
+
+    /// <summary>Каталог данных в профиле пользователя: переживает dotnet clean и пересборку.</summary>
+    private static string DataDirectory => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppFolderName);
+
+    private static string DataPath => Path.Combine(DataDirectory, DataFileName);
+
+    private static string DemoDataPath => Path.Combine(DataDirectory, DemoDataFileName);
 
     private static async Task Main(string[] args)
     {
@@ -22,14 +34,14 @@ internal static class Program
 
         if (args.Contains("--demo", StringComparer.OrdinalIgnoreCase))
         {
-            await RunDemoAsync(repository, args);
+            await RunDemoAsync(repository, DemoDataPath, args);
             return;
         }
 
-        await RunMenuAsync(repository);
+        await RunMenuAsync(repository, DataPath);
     }
 
-    private static async Task RunDemoAsync(RequestRepository repository, string[] args)
+    private static async Task RunDemoAsync(RequestRepository repository, string demoPath, string[] args)
     {
         SeedDemoData(repository);
 
@@ -43,14 +55,13 @@ internal static class Program
 
         if (!listOnly)
         {
-            await PrintStorageAsync(repository);
+            await PrintStorageAsync(repository, demoPath);
         }
 
         Console.WriteLine();
         if (!args.Contains("--no-wait"))
         {
-            Console.WriteLine("Демонстрация завершена. Нажмите любую клавишу...");
-            Console.ReadKey();
+            WaitForKey("Демонстрация завершена. Нажмите любую клавишу...");
         }
     }
 
@@ -95,7 +106,7 @@ internal static class Program
         }
     }
 
-    private static async Task PrintStorageAsync(RequestRepository repository)
+    private static async Task PrintStorageAsync(RequestRepository repository, string path)
     {
         PrintSection("Статистика");
         PrintStats(repository);
@@ -103,11 +114,11 @@ internal static class Program
         PrintSection("Сохранение и загрузка JSON");
         try
         {
-            await repository.SaveAsync(DataPath);
-            Console.WriteLine($"   Файл сохранён: {Path.GetFileName(DataPath)}");
+            await repository.SaveAsync(path);
+            Console.WriteLine($"   Файл сохранён: {path}");
 
             var loaded = new RequestRepository();
-            int count = await loaded.LoadAsync(DataPath);
+            int count = await loaded.LoadAsync(path);
             Console.WriteLine($"   Из файла загружено заявок: {count}");
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
@@ -116,7 +127,7 @@ internal static class Program
         }
     }
 
-    private static async Task RunMenuAsync(RequestRepository repository)
+    private static async Task RunMenuAsync(RequestRepository repository, string dataPath)
     {
         while (true)
         {
@@ -151,16 +162,16 @@ internal static class Program
                         PrintStats(repository);
                         break;
                     case "5":
-                        await repository.SaveAsync(DataPath);
-                        Console.WriteLine($"Сохранено: {DataPath}");
+                        await repository.SaveAsync(dataPath);
+                        Console.WriteLine($"Сохранено: {dataPath}");
                         break;
                     case "6":
-                        int count = await repository.LoadAsync(DataPath);
+                        int count = await repository.LoadAsync(dataPath);
                         Console.WriteLine($"Загружено заявок: {count}");
                         break;
                     case "0":
                         Console.WriteLine("Работа завершена.");
-                        Console.ReadKey();
+                        WaitForKey();
                         return;
                     default:
                         Console.WriteLine("Неизвестная команда.");
@@ -169,7 +180,11 @@ internal static class Program
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine($"Файл не найден: {DataPath}");
+                Console.WriteLine($"Файл не найден: {dataPath}. Список заявок остаётся пустым.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Некорректные данные: {ex.Message}");
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
             {
@@ -180,9 +195,9 @@ internal static class Program
 
     private static void AddRequest(RequestRepository repository)
     {
-        string author = ReadRequired("Автор: ");
-        string department = ReadRequired("Подразделение: ");
-        string description = ReadRequired("Описание: ");
+        string author = ReadRequired("Автор: ", RequestRepository.MaxAuthorLength);
+        string department = ReadRequired("Подразделение: ", RequestRepository.MaxDepartmentLength);
+        string description = ReadRequired("Описание: ", RequestRepository.MaxDescriptionLength);
         int priorityNumber = ReadInt(
             "Приоритет (1 — низкий, 2 — обычный, 3 — высокий, 4 — критический): ", 1, 4);
 
@@ -224,18 +239,39 @@ internal static class Program
         Console.WriteLine(new string('-', 110));
     }
 
-    private static string ReadRequired(string prompt)
+    /// <summary>Ожидание клавиши только при интерактивном вводе.</summary>
+    private static void WaitForKey(string message = "Нажмите любую клавишу...")
+    {
+        // При перенаправлённом вводе (echo 0 | dotnet run) Console.ReadKey бросает InvalidOperationException.
+        if (Console.IsInputRedirected)
+        {
+            return;
+        }
+
+        Console.WriteLine(message);
+        Console.ReadKey();
+    }
+
+    private static string ReadRequired(string prompt, int maxLength)
     {
         while (true)
         {
             Console.Write(prompt);
             string value = Console.ReadLine()?.Trim() ?? string.Empty;
-            if (value.Length > 0)
+
+            if (value.Length == 0)
             {
-                return value;
+                Console.WriteLine("Значение не может быть пустым.");
+                continue;
             }
 
-            Console.WriteLine("Значение не может быть пустым.");
+            if (value.Length > maxLength)
+            {
+                Console.WriteLine($"Слишком длинное значение: не больше {maxLength} символов.");
+                continue;
+            }
+
+            return value;
         }
     }
 

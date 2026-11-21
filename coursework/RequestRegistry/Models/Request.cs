@@ -21,6 +21,19 @@ public sealed class Request
     public DateTime? ClosedAt { get; set; }
 
     [JsonIgnore]
-    public double? ResolutionDays =>
-        ClosedAt is null ? null : (ClosedAt.Value - CreatedAt).TotalDays;
+    public double? ResolutionDays
+    {
+        get
+        {
+            if (ClosedAt is null)
+            {
+                return null;
+            }
+
+            double totalDays = (ClosedAt.Value - CreatedAt).TotalDays;
+
+            // Данные могли прийти из файла: отрицательный срок не должен попадать в статистику.
+            return totalDays < 0 ? 0 : totalDays;
+        }
+    }
 }

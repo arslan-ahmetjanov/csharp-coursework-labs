@@ -1,0 +1,11 @@
+<Project>
+
+  <!-- Общие свойства для всех проектов решения: не дублировать их в отдельных csproj. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>

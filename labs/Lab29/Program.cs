@@ -24,9 +24,17 @@ internal static class Program
                       "которые используются для работы со строками";
         string marker = "Были описаны основные операторы и методы";
         int start = text.IndexOf(marker, StringComparison.Ordinal);
-        string cut = text.Substring(start, marker.Length);
         Console.WriteLine("   Исходный текст: " + text.Length + " симв.");
-        Console.WriteLine("   Результат:      " + cut);
+
+        if (start < 0)
+        {
+            Console.WriteLine("   Маркер не найден, обрезка не выполнена.");
+        }
+        else
+        {
+            string cut = text.Substring(start, marker.Length);
+            Console.WriteLine("   Результат:      " + cut);
+        }
 
         Console.WriteLine();
         Console.WriteLine("Задача 3. Логины в нижнем регистре");
@@ -46,6 +54,7 @@ internal static class Program
         SumByIndexes(array, "3", "5");
         SumByIndexes(array, "abc", "5");
         SumByIndexes(array, "3", "15");
+        SumByIndexes(array, "99999999999", "5");
         SumByIndexes(array, "0", "5");
 
         Console.WriteLine();
@@ -79,6 +88,11 @@ internal static class Program
         {
             Console.WriteLine($"   Номера \"{first}\" и \"{second}\": " +
                               "введено не число");
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine($"   Номера \"{first}\" и \"{second}\": " +
+                              "число слишком велико");
         }
         catch (IndexOutOfRangeException ex)
         {

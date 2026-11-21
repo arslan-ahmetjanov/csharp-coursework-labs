@@ -10,4 +10,7 @@
     <Project Path="labs/Lab29/Lab29.csproj" />
     <Project Path="labs/Lab31/Lab31.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RequestRegistry.Tests/RequestRegistry.Tests.csproj" />
+  </Folder>
 </Solution>

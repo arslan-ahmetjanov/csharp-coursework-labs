@@ -4,10 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <RootNamespace>Lab31</RootNamespace>
-    <AssemblyName>Lab31</AssemblyName>
+    <!-- Разрешает восстанавливать Windows Desktop reference packs на Linux/macOS (NETSDK1100). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
 </Project>
