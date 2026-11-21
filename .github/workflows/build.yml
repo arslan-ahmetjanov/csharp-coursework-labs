@@ -22,3 +22,6 @@ jobs:
 
       - name: Run tests
         run: dotnet test tests/RequestRegistry.Tests/RequestRegistry.Tests.csproj --configuration Release --no-build
+
+      - name: Check formatting
+        run: dotnet format CSharpLabsCoursework.slnx --verify-no-changes --severity error --no-restore
